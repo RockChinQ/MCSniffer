@@ -48,7 +48,8 @@ public class ResultPanel extends JPanel {
             entryPanel.add(serverEntry);
         }
 
-        entryPanel.setSize(new Dimension(230,serverEntries.size()*70+3));
+        entryPanel.setSize(new Dimension(225,serverEntries.size()*70+3));
+        entryPanel.setPreferredSize(new Dimension(225,serverEntries.size()*70+3));
         resultListScrollPane.repaint();
     }
 }
