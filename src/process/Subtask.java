@@ -22,6 +22,7 @@ public class Subtask {
 
     IServerInfo.ModInfo modInfo;
     IServerInfo.ModPackData modPackData;
+    IServerInfo.ForgeData forgeData;
 
     public static final int STATUS_WAITING = 0,STATUS_TESTING = 1,STATUS_FINISHED = 2;
     public Subtask(String address,int port) {
@@ -115,5 +116,13 @@ public class Subtask {
 
     public void setPlayerList(String[] playerList) {
         this.playerList = playerList;
+    }
+
+    public IServerInfo.ForgeData getForgeData() {
+        return forgeData;
+    }
+
+    public void setForgeData(IServerInfo.ForgeData forgeData) {
+        this.forgeData = forgeData;
     }
 }

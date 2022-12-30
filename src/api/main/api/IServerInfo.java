@@ -31,6 +31,12 @@ public interface IServerInfo {
         String releaseType;
         boolean isMetadata;
     }
+
+    class ForgeData{
+        int fmlNetworkVersion;
+        String d;
+        boolean truncated;
+    }
     boolean isAvailable();
     String getVersionName();
     int getVersionProtocol();
@@ -46,4 +52,5 @@ public interface IServerInfo {
 
     ModInfo getModInfo();
     ModPackData getModPackData();
+    ForgeData getForgeData();
 }

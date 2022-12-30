@@ -42,6 +42,7 @@ public class WorkerThread extends Thread{
                     subtask.protocolVersion=server.getVersionProtocol();
                     subtask.modInfo=server.getModInfo();
                     subtask.modPackData=server.getModPackData();
+                    subtask.forgeData= server.getForgeData();
                     subtask.favicon=server.getFaviconImage();
                     ArrayList<String> playerList=new ArrayList<>();
 

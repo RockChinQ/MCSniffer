@@ -276,6 +276,7 @@ public class MinecraftServer implements IServerInfo {
         ModInfo modinfo;
 
         ModPackData modpackData;
+        ForgeData forgeData;
     }
 
     @Override
@@ -402,5 +403,10 @@ public class MinecraftServer implements IServerInfo {
     @Override
     public ModPackData getModPackData() {
         return response.modpackData;
+    }
+
+    @Override
+    public ForgeData getForgeData() {
+        return response.forgeData;
     }
 }

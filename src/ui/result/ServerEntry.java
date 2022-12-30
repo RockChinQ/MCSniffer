@@ -74,8 +74,17 @@ public class ServerEntry extends JPanel {
         modLabel.setBounds(150,50,120,15);
         modLabel.setText("mod detected");
         modLabel.setForeground(Color.RED);
-        if (subtask.getModInfo()!=null||subtask.getModPackData()!=null){
-            String mod="ModInfo:"+(new Gson().toJson(subtask.getModInfo()))+"\nModPackData:"+(new Gson().toJson(subtask.getModPackData()));
+        if (subtask.getModInfo()!=null||subtask.getModPackData()!=null||subtask.getForgeData()!=null){
+            String mod="";
+            if (subtask.getModInfo()!=null){
+                mod+="ModInfo:"+(new Gson().toJson(subtask.getModInfo()));
+            }
+            if (subtask.getModPackData()!=null){
+                mod+="ModPackData:"+(new Gson().toJson(subtask.getModPackData()));
+            }
+            if (subtask.getForgeData()!=null){
+                mod+="ForgeData:"+(new Gson().toJson(subtask.getForgeData()));
+            }
             modLabel.setToolTipText(mod);
             this.add(modLabel);
         }

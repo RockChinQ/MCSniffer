@@ -43,7 +43,7 @@ public class ResultPanel extends JPanel {
 
             serverEntry.setSize(230,70);
 
-            serverEntry.setLocation(3,i*serverEntry.getHeight()+3);
+            serverEntry.setLocation(1,i*serverEntry.getHeight()+3);
             serverEntry.setBorder(BorderFactory.createEtchedBorder());
             entryPanel.add(serverEntry);
         }
