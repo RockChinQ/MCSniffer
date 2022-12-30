@@ -14,6 +14,7 @@ public class Subtask {
     int maxPlayers;
     int onlinePlayers;
 
+    String[] playerList;
     String versionName;
     int protocolVersion;
 
@@ -106,5 +107,13 @@ public class Subtask {
 
     public void setFavicon(BufferedImage favicon) {
         this.favicon = favicon;
+    }
+
+    public String[] getPlayerList() {
+        return playerList;
+    }
+
+    public void setPlayerList(String[] playerList) {
+        this.playerList = playerList;
     }
 }

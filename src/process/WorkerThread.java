@@ -3,6 +3,8 @@ package process;
 import api.main.conn.MinecraftServer;
 import core.Main;
 
+import java.util.ArrayList;
+
 public class WorkerThread extends Thread{
     ISubtaskIterator subtaskIterator;
     int timeout;
@@ -41,6 +43,14 @@ public class WorkerThread extends Thread{
                     subtask.modInfo=server.getModInfo();
                     subtask.modPackData=server.getModPackData();
                     subtask.favicon=server.getFaviconImage();
+                    ArrayList<String> playerList=new ArrayList<>();
+
+                    for (int i = 0; i < server.getOnlinePlayer(); i++) {
+                        playerList.add(server.getPlayerList()[i].name);
+                    }
+
+                    subtask.playerList=playerList.toArray(new String[0]);
+
                     subtaskIterator.submit(subtask);
                 }else {
                     throw new Exception("Server is not available");

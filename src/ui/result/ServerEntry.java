@@ -54,6 +54,7 @@ public class ServerEntry extends JPanel {
 
         playersLabel.setBounds(40,35,140,15);
         playersLabel.setText("Players: "+subtask.getOnlinePlayers()+"/"+subtask.getMaxPlayers());
+        playersLabel.setToolTipText(subtask.getPlayerList().toString());
         playersLabel.setForeground(Color.RED);
         this.add(playersLabel);
 
