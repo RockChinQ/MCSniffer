@@ -22,7 +22,7 @@ public class DashboardPanel extends JPanel {
         waterfallPanel=new WaterfallPanel();
         progressTabbedPane.add("Waterfall",waterfallPanel);
 
-        logPanel.setBounds(5,progressTabbedPane.getY()+progressTabbedPane.getHeight()+10,575,220);
+        logPanel.setBounds(5,progressTabbedPane.getY()+progressTabbedPane.getHeight()+5,575,220);
         this.add(logPanel);
 
         logPanel.setBorder(BorderFactory.createTitledBorder("Log"));

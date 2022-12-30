@@ -55,6 +55,7 @@ public class SnifferTask implements ISubtaskIterator {
 
     public void start(){
         results.clear();
+        Main.mainFrame.tabbedPane.setTitleAt(2,"Results");
         workerThreads.clear();
 
         for (int i = 0; i < thread; i++) {
@@ -99,6 +100,8 @@ public class SnifferTask implements ISubtaskIterator {
     public synchronized void submit(Subtask subtask) {
         Logger.log("Sniffer","Submit: "+subtask.address+":"+subtask.port+" player:"+subtask.onlinePlayers+"/"+subtask.maxPlayers+" version: "+subtask.versionName+" description: "+subtask.description);
         results.add(subtask);
+
+        Main.mainFrame.tabbedPane.setTitleAt(2,"Results("+results.size()+")");
     }
 
     @Override

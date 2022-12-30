@@ -415,4 +415,8 @@ public class MinecraftServer implements IServerInfo {
     public Response.ModInfo getModInfo() {
         return response.modinfo;
     }
+
+    public Response.ModPackData getModPackData() {
+        return response.modpackData;
+    }
 }

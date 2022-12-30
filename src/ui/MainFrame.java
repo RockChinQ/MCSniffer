@@ -1,6 +1,7 @@
 package ui;
 
 import ui.dashborad.DashboardPanel;
+import ui.result.ResultPanel;
 import ui.settings.SettingsPanel;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ public class MainFrame extends JFrame {
 
     public SettingsPanel settingsPanel=new SettingsPanel();
     public DashboardPanel dashboardPanel=new DashboardPanel();
+    public ResultPanel resultPanel=new ResultPanel();
     public MainFrame(){
         this.setTitle("MCSniffer");
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -42,6 +44,7 @@ public class MainFrame extends JFrame {
         this.add(tabbedPane);
         tabbedPane.add("Settings", settingsPanel);
         tabbedPane.add("Dashboard", dashboardPanel);
+        tabbedPane.add("Results", resultPanel);
 
         this.setResizable(false);
         this.setVisible(true);
