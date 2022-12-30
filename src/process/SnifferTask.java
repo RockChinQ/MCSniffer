@@ -1,5 +1,8 @@
 package process;
 
+import core.Logger;
+import core.Main;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -10,15 +13,17 @@ public class SnifferTask implements ISubtaskIterator {
 
     int intervalMin,intervalMax;
 
-    ArrayList<String> addresses;
-    ArrayList<Integer> ports;
+    public ArrayList<String> addresses;
+    public ArrayList<Integer> ports;
 
-    int currentAddressIndex=0;
-    int currentPortIndex=0;
+    public int currentAddressIndex=0;
+    public int currentPortIndex=0;
 
     public ArrayList<WorkerThread> workerThreads=new ArrayList<>();
 
-    ArrayList<Subtask> results=new ArrayList<>();
+    public int status=0;
+    public static final int STATUS_STOPPED=0,STATUS_RUNNING=1;
+    public ArrayList<Subtask> results=new ArrayList<>();
     public SnifferTask(String address,String port, int thread,int timeout,int intervalMin,int intervalMax) {
         this.thread=thread;
         this.timeout=timeout;
@@ -57,8 +62,20 @@ public class SnifferTask implements ISubtaskIterator {
             workerThread.start();
             workerThreads.add(workerThread);
         }
+        status=STATUS_RUNNING;
     }
 
+    public void stop(){
+        this.status=STATUS_STOPPED;
+        Main.mainFrame.dashboardPanel.stop();
+        Main.mainFrame.settingsPanel.setEditable(true);
+
+        new Thread(() -> {
+            for (WorkerThread workerThread : workerThreads) {
+                workerThread.stop();
+            }
+        }).start();
+    }
     @Override
     public synchronized boolean hasNext() {
         if (currentAddressIndex>=addresses.size()){
@@ -80,12 +97,13 @@ public class SnifferTask implements ISubtaskIterator {
 
     @Override
     public synchronized void submit(Subtask subtask) {
-        System.out.println("Submit: "+subtask.address+":"+subtask.port+" player:"+subtask.onlinePlayers+"/"+subtask.maxPlayers+" version: "+subtask.versionName+" description: "+subtask.description);
+        Logger.log("Sniffer","Submit: "+subtask.address+":"+subtask.port+" player:"+subtask.onlinePlayers+"/"+subtask.maxPlayers+" version: "+subtask.versionName+" description: "+subtask.description);
         results.add(subtask);
     }
 
     @Override
     public synchronized void exception(Subtask subtask, Exception e) {
 //        System.out.println("Exception: "+subtask.address+":"+subtask.port);
+        Logger.log("Sniffer","Exception: "+subtask.address+":"+subtask.port+" "+e.getMessage());
     }
 }

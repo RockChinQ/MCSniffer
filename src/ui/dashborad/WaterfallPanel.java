@@ -1,6 +1,7 @@
 package ui.dashborad;
 
 import core.Main;
+import process.SnifferTask;
 import process.WorkerThread;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class WaterfallPanel extends JPanel {
-    long startTime;
+    long startTime,stopTime;
 
     long scanInterval=250;
     long panelDuration=60*1000;
@@ -68,13 +69,20 @@ public class WaterfallPanel extends JPanel {
             }
         }, 0, scanInterval);
     }
+
+    public void stop(){
+        timer.cancel();
+        this.stopTime=System.currentTimeMillis();
+        this.repaint();
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         int panelWidth=this.getWidth()-labelWidth-legendWidth;
         int panelHeight=this.getHeight()-scaleHeight;
 
-        ArrayList<WorkerThread> workerThreads= Main.snifferTask.workerThreads;
+        ArrayList<WorkerThread> workerThreads=Main.snifferTask.workerThreads;
         //绘制标签
         g.setColor(Color.BLACK);
         for (int i = 0; i < workerThreads.size(); i++) {
@@ -121,10 +129,10 @@ public class WaterfallPanel extends JPanel {
         }
 
         //飞棱柱
-        g.setColor(Color.GREEN);
-        g.drawLine((int) ((System.currentTimeMillis()-startTime)%panelDuration/(double)panelDuration*panelWidth)+labelWidth,
+        g.setColor(Main.snifferTask.status== SnifferTask.STATUS_RUNNING?Color.GREEN:Color.RED);
+        g.drawLine((int) (((Main.snifferTask.status==SnifferTask.STATUS_RUNNING?System.currentTimeMillis():stopTime)-startTime)%panelDuration/(double)panelDuration*panelWidth)+labelWidth,
                 2,
-                (int) ((System.currentTimeMillis()-startTime)%panelDuration/(double)panelDuration*panelWidth)+labelWidth,panelHeight+5);
+                (int) (((Main.snifferTask.status==SnifferTask.STATUS_RUNNING?System.currentTimeMillis():stopTime)-startTime)%panelDuration/(double)panelDuration*panelWidth)+labelWidth,panelHeight+5);
 
 
         //图例

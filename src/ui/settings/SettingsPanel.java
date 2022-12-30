@@ -76,7 +76,7 @@ public class SettingsPanel extends JPanel {
             Main.mainFrame.settingsPanel.setEditable(false);
             Main.mainFrame.tabbedPane.setSelectedIndex(1);
             Main.snifferTask.start();
-            Main.mainFrame.dashboardPanel.waterfallPanel.start(200);
+            Main.mainFrame.dashboardPanel.start(200);
         });
         this.add(saveAndStart);
     }

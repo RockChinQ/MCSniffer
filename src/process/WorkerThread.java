@@ -1,6 +1,7 @@
 package process;
 
 import api.main.conn.MinecraftServer;
+import core.Main;
 
 public class WorkerThread extends Thread{
     ISubtaskIterator subtaskIterator;
@@ -22,6 +23,12 @@ public class WorkerThread extends Thread{
     public void run() {
         while (subtaskIterator.hasNext()){
             Subtask subtask=subtaskIterator.next();
+            status= STATUS_SLEEPING;
+            try {
+                Thread.sleep((long) (Math.random()*(intervalMax-intervalMin)+intervalMin));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             status=STATUS_TESTING;
             try {
                 MinecraftServer server = new MinecraftServer(subtask.address,subtask.port,false,this.timeout);
@@ -38,13 +45,13 @@ public class WorkerThread extends Thread{
             } catch (Exception e) {
                 subtaskIterator.exception(subtask,e);
             }
-            status= STATUS_SLEEPING;
-            try {
-                Thread.sleep((long) (Math.random()*(intervalMax-intervalMin)+intervalMin));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         status=STATUS_FINISHED;
+        for (WorkerThread workerThread : Main.snifferTask.workerThreads) {
+            if (workerThread.status!=STATUS_FINISHED){
+                return;
+            }
+        }
+        Main.snifferTask.stop();
     }
 }
