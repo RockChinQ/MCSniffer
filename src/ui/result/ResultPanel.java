@@ -40,7 +40,9 @@ public class ResultPanel extends JPanel {
             ServerEntry serverEntry=new ServerEntry(Main.snifferTask.results.get(i));
             serverEntries.add(serverEntry);
 
-            serverEntry.setBounds(3,i*serverEntry.getHeight()+3,230,70);
+            serverEntry.setSize(230,70);
+
+            serverEntry.setLocation(3,i*serverEntry.getHeight()+3);
             serverEntry.setBorder(BorderFactory.createEtchedBorder());
             resultListScrollPane.add(serverEntry);
         }
