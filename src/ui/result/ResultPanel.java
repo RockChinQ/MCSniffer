@@ -9,18 +9,20 @@ import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 public class ResultPanel extends JPanel {
-    public JScrollPane resultListScrollPane=new JScrollPane();
 
+    public JPanel entryPanel=new JPanel();
+    public JScrollPane resultListScrollPane=new JScrollPane(entryPanel);
     ArrayList<ServerEntry> serverEntries=new ArrayList<>();
 
+    JButton refresh=new JButton("Refresh");
     public ResultPanel(){
         this.setLayout(null);
 
-        resultListScrollPane.setBounds(10,10,250,350);
+        resultListScrollPane.setBounds(10,10,250,330);
         resultListScrollPane.setBorder(BorderFactory.createEtchedBorder());
-        resultListScrollPane.setLayout(null);
 
         this.add(resultListScrollPane);
+        entryPanel.setLayout(null);
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -35,8 +37,6 @@ public class ResultPanel extends JPanel {
         serverEntries.forEach(resultListScrollPane::remove);
         serverEntries.clear();
 
-        int scrollY=resultListScrollPane.getVerticalScrollBar().getValue();
-
         for(int i=0;i<Main.snifferTask.results.size();i++){
             ServerEntry serverEntry=new ServerEntry(Main.snifferTask.results.get(i));
             serverEntries.add(serverEntry);
@@ -45,11 +45,10 @@ public class ResultPanel extends JPanel {
 
             serverEntry.setLocation(3,i*serverEntry.getHeight()+3);
             serverEntry.setBorder(BorderFactory.createEtchedBorder());
-            resultListScrollPane.add(serverEntry);
+            entryPanel.add(serverEntry);
         }
 
-        resultListScrollPane.getVerticalScrollBar().setValue(scrollY);
-        resultListScrollPane.setPreferredSize(new Dimension(230,serverEntries.size()*70+3));
+        entryPanel.setSize(new Dimension(230,serverEntries.size()*70+3));
         resultListScrollPane.repaint();
     }
 }
