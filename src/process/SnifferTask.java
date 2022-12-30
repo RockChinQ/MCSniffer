@@ -101,6 +101,8 @@ public class SnifferTask implements ISubtaskIterator {
         Logger.log("Sniffer","Submit: "+subtask.address+":"+subtask.port+" player:"+subtask.onlinePlayers+"/"+subtask.maxPlayers+" version: "+subtask.versionName+" description: "+subtask.description);
         results.add(subtask);
 
+        Main.mainFrame.resultPanel.updateServerList();
+
         Main.mainFrame.tabbedPane.setTitleAt(2,"Results("+results.size()+")");
     }
 

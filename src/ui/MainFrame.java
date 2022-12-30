@@ -5,6 +5,8 @@ import ui.result.ResultPanel;
 import ui.settings.SettingsPanel;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -42,6 +44,14 @@ public class MainFrame extends JFrame {
 
         tabbedPane = new JTabbedPane();
         this.add(tabbedPane);
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (tabbedPane.getSelectedIndex()==2){
+                    resultPanel.updateServerList();
+                }
+            }
+        });
         tabbedPane.add("Settings", settingsPanel);
         tabbedPane.add("Dashboard", dashboardPanel);
         tabbedPane.add("Results", resultPanel);
