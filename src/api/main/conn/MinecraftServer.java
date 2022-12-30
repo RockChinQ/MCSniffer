@@ -13,7 +13,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Timer;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -156,9 +155,9 @@ public class MinecraftServer implements IServerInfo {
                     response.version.protocol=Integer.parseInt
                             (new String(bbase.pop(end),StandardCharsets.UTF_16BE));
                     response.version.name=new String(bbase.pop(end),StandardCharsets.UTF_16BE);
-                    response.description=new Response.description();
+                    response.description=new Response.Description();
                     response.description.text=new String(bbase.pop(end),StandardCharsets.UTF_16BE);
-                    response.players=new Response.players();
+                    response.players=new Response.Players();
                     response.players.online=Integer.parseInt
                             (new String(bbase.pop(end),StandardCharsets.UTF_16BE));
                     response.players.max=Integer.parseInt
@@ -192,10 +191,10 @@ public class MinecraftServer implements IServerInfo {
                     response.version.name="<1.4";
                     response.version.protocol=-1;
 
-                    response.description=new Response.description();
+                    response.description=new Response.Description();
                     response.description.text=new String(bbase.pop(end),StandardCharsets.UTF_16BE);
 
-                    response.players=new Response.players();
+                    response.players=new Response.Players();
                     response.players.online=Integer.parseInt(new String(bbase.pop(end),StandardCharsets.UTF_16BE));
                     response.players.max=Integer.parseInt(new String(bbase.pop(zeroEnd),StandardCharsets.UTF_16BE));
                     debugMsg("done.");
@@ -252,13 +251,13 @@ public class MinecraftServer implements IServerInfo {
     }
 
     public static class Response{
-        static class description{
+        static class Description {
             String text;
             String color;
-            description[] extra;
+            Description[] extra;
         }
-        description description;
-        static class players{
+        Description description;
+        static class Players {
             int max;
             int online;
             class player{
@@ -267,31 +266,14 @@ public class MinecraftServer implements IServerInfo {
             }
             player[] sample;
         }
-        players players;
+        Players players;
         static class version{
             String name;
             int protocol;
         }
         version version;
         String favicon;
-        static class ModInfo {
-            String type;
-            static class Mod {
-                String modid;
-                String version;
-            }
-            Mod[] modList;
-        }
         ModInfo modinfo;
-
-        static class ModPackData{
-            int projectID;
-            String name;
-            String version;
-            int versionID;
-            String releaseType;
-            boolean isMetadata;
-        }
 
         ModPackData modpackData;
     }
@@ -412,11 +394,13 @@ public class MinecraftServer implements IServerInfo {
         return ImageIO.read(bais);
     }
 
-    public Response.ModInfo getModInfo() {
+    @Override
+    public ModInfo getModInfo() {
         return response.modinfo;
     }
 
-    public Response.ModPackData getModPackData() {
+    @Override
+    public ModPackData getModPackData() {
         return response.modpackData;
     }
 }

@@ -38,6 +38,9 @@ public class WorkerThread extends Thread{
                     subtask.onlinePlayers=server.getOnlinePlayer();
                     subtask.versionName=server.getVersionName();
                     subtask.protocolVersion=server.getVersionProtocol();
+                    subtask.modInfo=server.getModInfo();
+                    subtask.modPackData=server.getModPackData();
+                    subtask.favicon=server.getFaviconImage();
                     subtaskIterator.submit(subtask);
                 }else {
                     throw new Exception("Server is not available");

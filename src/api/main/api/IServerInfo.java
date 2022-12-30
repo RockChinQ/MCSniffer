@@ -15,6 +15,22 @@ public interface IServerInfo {
         public String text;
         public String color;
     }
+    class ModInfo {
+        String type;
+        static class Mod {
+            String modid;
+            String version;
+        }
+        Mod[] modList;
+    }
+    class ModPackData{
+        int projectID;
+        String name;
+        String version;
+        int versionID;
+        String releaseType;
+        boolean isMetadata;
+    }
     boolean isAvailable();
     String getVersionName();
     int getVersionProtocol();
@@ -27,4 +43,7 @@ public interface IServerInfo {
     String getFaviconBase64();
     BufferedImage getFaviconImage();
     String getRawJSONString();
+
+    ModInfo getModInfo();
+    ModPackData getModPackData();
 }
