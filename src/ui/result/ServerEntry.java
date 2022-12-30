@@ -7,6 +7,7 @@ import process.Subtask;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 public class ServerEntry extends JPanel {
     Subtask subtask;
@@ -54,7 +55,7 @@ public class ServerEntry extends JPanel {
 
         playersLabel.setBounds(40,35,140,15);
         playersLabel.setText("Players: "+subtask.getOnlinePlayers()+"/"+subtask.getMaxPlayers());
-        playersLabel.setToolTipText(subtask.getPlayerList().toString());
+        playersLabel.setToolTipText(Arrays.toString(subtask.getPlayerList()));
         playersLabel.setForeground(Color.RED);
         this.add(playersLabel);
 
