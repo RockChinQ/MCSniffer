@@ -3,6 +3,7 @@ package ui.result;
 import core.Main;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class ResultPanel extends JPanel {
         }
 
         resultListScrollPane.getVerticalScrollBar().setValue(scrollY);
+        resultListScrollPane.setPreferredSize(new Dimension(230,serverEntries.size()*70+3));
         resultListScrollPane.repaint();
     }
 }
