@@ -16,8 +16,8 @@ public class ServerEntry extends JPanel {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
-            if(subtask.getFavicon()!=null){
-                g.drawImage(subtask.getFavicon(), 0,0,getWidth(),getHeight(),null);
+            if(subtask.getMinecraftServer().getFaviconImage()!=null){
+                g.drawImage(subtask.getMinecraftServer().getFaviconImage(), 0,0,getWidth(),getHeight(),null);
             }else {
                 g.setColor(Color.WHITE);
                 g.fillRect(0,0,getWidth(),getHeight());
@@ -49,18 +49,18 @@ public class ServerEntry extends JPanel {
         this.add(nameLabel);
 
         descriptionLabel.setBounds(40,20,140,15);
-        descriptionLabel.setText(subtask.getDescription());
-        descriptionLabel.setToolTipText(subtask.getDescription());
+        descriptionLabel.setText(subtask.getMinecraftServer().getDefaultDescriptionText());
+        descriptionLabel.setToolTipText(subtask.getMinecraftServer().getDefaultDescriptionText());
         this.add(descriptionLabel);
 
         playersLabel.setBounds(40,35,140,15);
-        playersLabel.setText("Players: "+subtask.getOnlinePlayers()+"/"+subtask.getMaxPlayers());
+        playersLabel.setText("Players: "+subtask.getMinecraftServer().getOnlinePlayer()+"/"+subtask.getMinecraftServer().getMaxPlayer());
         playersLabel.setToolTipText(Arrays.toString(subtask.getPlayerList()));
         playersLabel.setForeground(Color.RED);
         this.add(playersLabel);
 
         versionLabel.setBounds(40,50,140,15);
-        versionLabel.setText(subtask.getVersionName());
+        versionLabel.setText(subtask.getMinecraftServer().getVersionName());
         versionLabel.setForeground(Color.blue);
         this.add(versionLabel);
 
@@ -74,16 +74,16 @@ public class ServerEntry extends JPanel {
         modLabel.setBounds(150,50,120,15);
         modLabel.setText("mod detected");
         modLabel.setForeground(Color.RED);
-        if (subtask.getModInfo()!=null||subtask.getModPackData()!=null||subtask.getForgeData()!=null){
+        if (subtask.getMinecraftServer().getModInfo()!=null||subtask.getMinecraftServer().getModPackData()!=null||subtask.getMinecraftServer().getForgeData()!=null){
             String mod="";
-            if (subtask.getModInfo()!=null){
-                mod+="ModInfo:"+(new Gson().toJson(subtask.getModInfo()));
+            if (subtask.getMinecraftServer().getModInfo()!=null){
+                mod+="ModInfo:"+(new Gson().toJson(subtask.getMinecraftServer().getModInfo()));
             }
-            if (subtask.getModPackData()!=null){
-                mod+="ModPackData:"+(new Gson().toJson(subtask.getModPackData()));
+            if (subtask.getMinecraftServer().getModPackData()!=null){
+                mod+="ModPackData:"+(new Gson().toJson(subtask.getMinecraftServer().getModPackData()));
             }
-            if (subtask.getForgeData()!=null){
-                mod+="ForgeData:"+(new Gson().toJson(subtask.getForgeData()));
+            if (subtask.getMinecraftServer().getForgeData()!=null){
+                mod+="ForgeData:"+(new Gson().toJson(subtask.getMinecraftServer().getForgeData()));
             }
             modLabel.setToolTipText(mod);
             this.add(modLabel);

@@ -1,33 +1,30 @@
 package process;
 
 import api.main.api.IServerInfo;
+import api.main.conn.MinecraftServer;
 
 import java.awt.image.BufferedImage;
 
 public class Subtask {
 
-    String address;
-    int port;
-
-    String description;
-
-    int maxPlayers;
-    int onlinePlayers;
+    public MinecraftServer minecraftServer;
 
     String[] playerList;
-    String versionName;
-    int protocolVersion;
-
-    BufferedImage favicon;
-
-    IServerInfo.ModInfo modInfo;
-    IServerInfo.ModPackData modPackData;
-    IServerInfo.ForgeData forgeData;
+    String address;
+    int port;
 
     public static final int STATUS_WAITING = 0,STATUS_TESTING = 1,STATUS_FINISHED = 2;
     public Subtask(String address,int port) {
         this.address=address;
         this.port=port;
+    }
+
+    public MinecraftServer getMinecraftServer() {
+        return minecraftServer;
+    }
+
+    public void setMinecraftServer(MinecraftServer minecraftServer) {
+        this.minecraftServer = minecraftServer;
     }
 
     public String getAddress() {
@@ -46,83 +43,11 @@ public class Subtask {
         this.port = port;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getMaxPlayers() {
-        return maxPlayers;
-    }
-
-    public void setMaxPlayers(int maxPlayers) {
-        this.maxPlayers = maxPlayers;
-    }
-
-    public int getOnlinePlayers() {
-        return onlinePlayers;
-    }
-
-    public void setOnlinePlayers(int onlinePlayers) {
-        this.onlinePlayers = onlinePlayers;
-    }
-
-    public String getVersionName() {
-        return versionName;
-    }
-
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
-    }
-
-    public int getProtocolVersion() {
-        return protocolVersion;
-    }
-
-    public void setProtocolVersion(int protocolVersion) {
-        this.protocolVersion = protocolVersion;
-    }
-
-    public IServerInfo.ModInfo getModInfo() {
-        return modInfo;
-    }
-
-    public void setModInfo(IServerInfo.ModInfo modInfo) {
-        this.modInfo = modInfo;
-    }
-
-    public IServerInfo.ModPackData getModPackData() {
-        return modPackData;
-    }
-
-    public void setModPackData(IServerInfo.ModPackData modPackData) {
-        this.modPackData = modPackData;
-    }
-
-    public BufferedImage getFavicon() {
-        return favicon;
-    }
-
-    public void setFavicon(BufferedImage favicon) {
-        this.favicon = favicon;
-    }
-
     public String[] getPlayerList() {
         return playerList;
     }
 
     public void setPlayerList(String[] playerList) {
         this.playerList = playerList;
-    }
-
-    public IServerInfo.ForgeData getForgeData() {
-        return forgeData;
-    }
-
-    public void setForgeData(IServerInfo.ForgeData forgeData) {
-        this.forgeData = forgeData;
     }
 }

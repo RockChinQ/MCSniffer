@@ -35,15 +35,7 @@ public class WorkerThread extends Thread{
             try {
                 MinecraftServer server = new MinecraftServer(subtask.address,subtask.port,false,this.timeout);
                 if (server.isAvailable()){
-                    subtask.description=server.getDefaultDescriptionText();
-                    subtask.maxPlayers=server.getMaxPlayer();
-                    subtask.onlinePlayers=server.getOnlinePlayer();
-                    subtask.versionName=server.getVersionName();
-                    subtask.protocolVersion=server.getVersionProtocol();
-                    subtask.modInfo=server.getModInfo();
-                    subtask.modPackData=server.getModPackData();
-                    subtask.forgeData= server.getForgeData();
-                    subtask.favicon=server.getFaviconImage();
+                    subtask.minecraftServer=server;
                     ArrayList<String> playerList=new ArrayList<>();
 
                     for (int i = 0; i < server.getOnlinePlayer(); i++) {

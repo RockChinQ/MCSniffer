@@ -24,20 +24,20 @@ public class ResultPanel extends JPanel {
         this.add(resultListScrollPane);
         entryPanel.setLayout(null);
 
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                super.componentShown(e);
-                updateServerList();
-            }
-        });
+//        this.addComponentListener(new ComponentAdapter() {
+//            @Override
+//            public void componentShown(ComponentEvent e) {
+//                super.componentShown(e);
+//                updateServerList();
+//            }
+//        });
     }
 
     public void updateServerList(){
         serverEntries.forEach(resultListScrollPane::remove);
         serverEntries.clear();
 
-        for(int i=0;i<Main.snifferTask.results.size();i++){
+        for(int i=0;Main.snifferTask!=null&&Main.snifferTask.results!=null&&i<Main.snifferTask.results.size();i++){
             ServerEntry serverEntry=new ServerEntry(Main.snifferTask.results.get(i));
             serverEntries.add(serverEntry);
 

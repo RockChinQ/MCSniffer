@@ -98,7 +98,10 @@ public class SnifferTask implements ISubtaskIterator {
 
     @Override
     public synchronized void submit(Subtask subtask) {
-        Logger.log("Sniffer","Submit: "+subtask.address+":"+subtask.port+" player:"+subtask.onlinePlayers+"/"+subtask.maxPlayers+" version: "+subtask.versionName+" description: "+subtask.description);
+        Logger.log("Sniffer","Submit: "+subtask.address+":"+subtask.port+" player:"
+                +subtask.getMinecraftServer().getOnlinePlayer()+"/"+subtask.getMinecraftServer().getMaxPlayer()
+                +" version: "+subtask.getMinecraftServer().getVersionName()+" description: "
+                +subtask.getMinecraftServer().getDefaultDescriptionText());
         results.add(subtask);
 
         Main.mainFrame.resultPanel.updateServerList();
