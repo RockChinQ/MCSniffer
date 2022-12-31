@@ -23,7 +23,7 @@ public class ProgressPanel extends JPanel {
 
     long scanInterval=250;
 
-    long startTime;
+    public long startTime;
     Timer timer;
     public ProgressPanel(){
         this.setLayout(null);

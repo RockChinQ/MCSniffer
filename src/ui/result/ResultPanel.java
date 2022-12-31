@@ -18,7 +18,7 @@ public class ResultPanel extends JPanel {
     public ResultPanel(){
         this.setLayout(null);
 
-        resultListScrollPane.setBounds(10,10,250,330);
+        resultListScrollPane.setBounds(10,10,570,330);
         resultListScrollPane.setBorder(BorderFactory.createEtchedBorder());
 
         this.add(resultListScrollPane);
@@ -34,15 +34,15 @@ public class ResultPanel extends JPanel {
             ServerEntry serverEntry=new ServerEntry(Main.snifferTask.results.get(i));
             serverEntries.add(serverEntry);
 
-            serverEntry.setSize(230,70);
+            serverEntry.setSize(550,70);
 
             serverEntry.setLocation(1,i*serverEntry.getHeight()+3);
             serverEntry.setBorder(BorderFactory.createEtchedBorder());
             entryPanel.add(serverEntry);
         }
 
-        entryPanel.setSize(new Dimension(225,serverEntries.size()*70+3));
-        entryPanel.setPreferredSize(new Dimension(225,serverEntries.size()*70+3));
+        entryPanel.setSize(new Dimension(535,serverEntries.size()*70+3));
+        entryPanel.setPreferredSize(new Dimension(535,serverEntries.size()*70+3));
         resultListScrollPane.repaint();
     }
 }

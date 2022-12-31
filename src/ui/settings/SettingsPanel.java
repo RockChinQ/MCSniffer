@@ -36,6 +36,8 @@ public class SettingsPanel extends JPanel {
     JSpinner randomIntervalMinSpinner=new JSpinner(randomIntervalMinSpinnerModel);
 
     JButton saveAndStart=new JButton("Save & Start");
+
+    JButton pauseAndResume=new JButton("Pause");
     public SettingsPanel(){
         this.setLayout(null);
 
@@ -76,34 +78,46 @@ public class SettingsPanel extends JPanel {
         randomIntervalMaxSpinner.setValue(Main.settings.intervalMax);
         this.add(randomIntervalMaxSpinner);
 
-        saveAndStart.setBounds(timeoutText.getX(),portRange.getY()+portRange.getHeight()-30,120,30);
+        saveAndStart.setBounds(timeoutText.getX(),randomIntervalMinSpinner.getY()+randomIntervalMinSpinner.getHeight()+10,100,30);
         saveAndStart.setBorder(BorderFactory.createEtchedBorder());
 
         saveAndStart.addActionListener(e->{
+            if (Main.snifferTask!=null) {
+                int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to start a new scan? Current progress will be erased.", "New Scan", JOptionPane.YES_NO_OPTION);
+                if (result != JOptionPane.YES_OPTION) {
+                    return;
+                }
+            }
             Main.snifferTask=new SnifferTask(addressRange.getValue(), portRange.getValue(),
                     proxyAddress.getValue().trim(),
                     (int)threadAmtSpinnerModel.getValue(),
                     (int)timeoutSpinnerModel.getValue()*1000,
                     (int)randomIntervalMinSpinnerModel.getValue()*1000,
                     (int)randomIntervalMaxSpinnerModel.getValue()*1000);
-            Main.mainFrame.settingsPanel.setEditable(false);
-            Main.mainFrame.tabbedPane.setSelectedIndex(1);
             Main.snifferTask.start();
-            Main.mainFrame.dashboardPanel.start(200);
 
-            Main.settings.addresses=addressRange.getValue();
-            Main.settings.ports=portRange.getValue();
-            Main.settings.proxyURL=proxyAddress.getValue().trim();
-            Main.settings.thread=(int)threadAmtSpinnerModel.getValue();
-            Main.settings.timeout=(int)timeoutSpinnerModel.getValue();
-            Main.settings.intervalMin=(int)randomIntervalMinSpinnerModel.getValue();
-            Main.settings.intervalMax=(int)randomIntervalMaxSpinnerModel.getValue();
-            try {
-                Main.settings.dump();
-            } catch (Exception ignored) {
-            }
+            exportSettings();
+
+            pauseAndResume.setEnabled(true);
+            pauseAndResume.setText("Pause");
         });
         this.add(saveAndStart);
+
+        pauseAndResume.setBounds(saveAndStart.getX(),saveAndStart.getY()+saveAndStart.getHeight()+10,100,30);
+        pauseAndResume.setBorder(BorderFactory.createEtchedBorder());
+        pauseAndResume.setEnabled(false);
+        pauseAndResume.addActionListener(e->{
+            if (pauseAndResume.getText().equals("Pause")) {
+                Main.snifferTask.pause();
+                pauseAndResume.setText("Resume");
+            }else {
+                exportSettings();
+                Main.snifferTask.progress.settings=Main.settings.clone();
+                Main.snifferTask.resume();
+                pauseAndResume.setText("Pause");
+            }
+        });
+        this.add(pauseAndResume);
     }
 
     public void setEditable(boolean b){
@@ -117,5 +131,20 @@ public class SettingsPanel extends JPanel {
         this.randomIntervalMinSpinner.setEnabled(b);
 
         saveAndStart.setEnabled(b);
+    }
+
+    public void exportSettings(){
+
+        Main.settings.addresses=addressRange.getValue();
+        Main.settings.ports=portRange.getValue();
+        Main.settings.proxyURL=proxyAddress.getValue().trim();
+        Main.settings.thread=(int)threadAmtSpinnerModel.getValue();
+        Main.settings.timeout=(int)timeoutSpinnerModel.getValue();
+        Main.settings.intervalMin=(int)randomIntervalMinSpinnerModel.getValue();
+        Main.settings.intervalMax=(int)randomIntervalMaxSpinnerModel.getValue();
+        try {
+            Main.settings.dump();
+        } catch (Exception ignored) {
+        }
     }
 }

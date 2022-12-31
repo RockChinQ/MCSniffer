@@ -41,4 +41,9 @@ public class Settings {
             this.intervalMax = settings.intervalMax;
         }
     }
+
+    @Override
+    public Settings clone(){
+        return new Gson().fromJson(new Gson().toJson(this), Settings.class);
+    }
 }

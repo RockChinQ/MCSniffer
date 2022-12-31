@@ -12,7 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class WaterfallPanel extends JPanel {
-    long startTime,stopTime;
+    public long startTime,stopTime;
 
     long scanInterval=250;
     long panelDuration=60*1000;
@@ -149,7 +149,7 @@ public class WaterfallPanel extends JPanel {
         g.setColor(new Color(0xff0000));
         g.fillRect(getWidth()-legendWidth+8, 45, 15, 15);
         g.setColor(Color.BLACK);
-        g.drawString("Finished",getWidth()-legendWidth+25, 60);
+        g.drawString("Stopped",getWidth()-legendWidth+25, 60);
 
         //border
         g.setColor(Color.GRAY);

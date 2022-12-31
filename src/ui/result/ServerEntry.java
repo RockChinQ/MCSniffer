@@ -6,6 +6,8 @@ import process.Subtask;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
@@ -43,12 +45,12 @@ public class ServerEntry extends JPanel {
         faviconLabel.setBounds(5,5,30,30);
         this.add(faviconLabel);
 
-        nameLabel.setBounds(40,5,140,15);
+        nameLabel.setBounds(40,5,240,15);
         nameLabel.setText(subtask.getAddress()+":"+subtask.getPort());
         nameLabel.setToolTipText(subtask.getAddress()+":"+subtask.getPort());
         this.add(nameLabel);
 
-        descriptionLabel.setBounds(40,20,140,15);
+        descriptionLabel.setBounds(40,20,240,15);
         descriptionLabel.setText(subtask.getMinecraftServer().getDefaultDescriptionText());
         descriptionLabel.setToolTipText(subtask.getMinecraftServer().getDefaultDescriptionText());
         this.add(descriptionLabel);
@@ -59,7 +61,7 @@ public class ServerEntry extends JPanel {
         playersLabel.setForeground(Color.RED);
         this.add(playersLabel);
 
-        versionLabel.setBounds(40,50,140,15);
+        versionLabel.setBounds(40,50,160,15);
         versionLabel.setText(subtask.getMinecraftServer().getVersionName());
         versionLabel.setForeground(Color.blue);
         this.add(versionLabel);
@@ -88,6 +90,15 @@ public class ServerEntry extends JPanel {
             modLabel.setToolTipText(mod);
             this.add(modLabel);
         }
+
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                copyAddressPortButton.setBounds(getWidth()-50,5,40,25);
+                modLabel.setBounds(getWidth()-110,50,100,15);
+            }
+        });
     }
 
 }

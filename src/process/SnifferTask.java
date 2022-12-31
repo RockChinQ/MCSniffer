@@ -2,6 +2,7 @@ package process;
 
 import core.Logger;
 import core.Main;
+import data.Progress;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -25,9 +26,12 @@ public class SnifferTask implements ISubtaskIterator {
 
     public ArrayList<WorkerThread> workerThreads=new ArrayList<>();
 
+    public long startTime;
     public int status=0;
-    public static final int STATUS_STOPPED=0,STATUS_RUNNING=1;
+    public static final int STATUS_STOPPED=0,STATUS_RUNNING=1,STATUS_PAUSED=2;
     public ArrayList<Subtask> results=new ArrayList<>();
+
+    public Progress progress;
     public SnifferTask(String address,String port,String proxyURL, int thread,int timeout,int intervalMin,int intervalMax) {
         this.thread=thread;
         this.timeout=timeout;
@@ -63,7 +67,10 @@ public class SnifferTask implements ISubtaskIterator {
 
     public void start(){
         results.clear();
-        Main.mainFrame.tabbedPane.setTitleAt(2,"Results");
+        progress=null;
+        startTime=System.currentTimeMillis();
+        Main.mainFrame.resultPanel.updateServerList();
+        Main.mainFrame.tabbedPane.setTitleAt(2,"Results (0)");
         workerThreads.clear();
 
         for (int i = 0; i < thread; i++) {
@@ -71,6 +78,42 @@ public class SnifferTask implements ISubtaskIterator {
             workerThread.start();
             workerThreads.add(workerThread);
         }
+        Main.mainFrame.settingsPanel.setEditable(false);
+        Main.mainFrame.tabbedPane.setSelectedIndex(1);
+        Main.mainFrame.dashboardPanel.start(200);
+        status=STATUS_RUNNING;
+    }
+
+    public void pause(){
+        progress=new Progress();
+        progress.settings=Main.settings;
+        progress.addressIndex=currentAddressIndex;
+        progress.portIndex=currentPortIndex;
+        progress.status=Progress.STATUS_INPROGRESS;
+        progress.results=results.toArray(new Subtask[0]);
+        progress.startTime=startTime;
+        this.stop();
+        status=STATUS_PAUSED;
+    }
+
+    public void resume(){
+        results.clear();
+        results.addAll(Arrays.asList(progress.results));
+        Main.mainFrame.resultPanel.updateServerList();
+        Main.mainFrame.tabbedPane.setTitleAt(2,"Results"+" ("+results.size()+")");
+        workerThreads.clear();
+        currentAddressIndex=progress.addressIndex;
+        currentPortIndex=progress.portIndex;
+        for (int i = 0; i < thread; i++) {
+            WorkerThread workerThread=new WorkerThread(this,proxy,timeout,intervalMin,intervalMax);
+            workerThread.start();
+            workerThreads.add(workerThread);
+        }
+        Main.mainFrame.settingsPanel.setEditable(false);
+        Main.mainFrame.tabbedPane.setSelectedIndex(1);
+        Main.mainFrame.dashboardPanel.start(200);
+        Main.mainFrame.dashboardPanel.progressPanel.startTime=progress.startTime;
+        Main.mainFrame.dashboardPanel.waterfallPanel.startTime=progress.startTime;
         status=STATUS_RUNNING;
     }
 
