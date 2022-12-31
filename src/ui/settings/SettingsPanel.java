@@ -3,13 +3,15 @@ package ui.settings;
 import core.Main;
 import process.SnifferTask;
 import ui.components.InputAreaField;
+import ui.components.InputField;
 
 import javax.swing.*;
 
 public class SettingsPanel extends JPanel {
-    InputAreaField addressRange=new InputAreaField("Addresses",350,200,70);
-    InputAreaField portRange=new InputAreaField("Ports",350,120,70);
+    InputAreaField addressRange=new InputAreaField("Addresses",350,120,70);
+    InputAreaField portRange=new InputAreaField("Ports",350,80,70);
 
+    InputField proxyAddress=new InputField("Proxy URL",350,30,70);
     SpinnerModel threadAmtSpinnerModel = new SpinnerNumberModel(8, // initial value
             0, // min
             65535, // max
@@ -43,6 +45,9 @@ public class SettingsPanel extends JPanel {
         portRange.setLocation(addressRange.getX(),addressRange.getY()+addressRange.getHeight()+15);
         this.add(portRange);
 
+        proxyAddress.setLocation(portRange.getX(),portRange.getY()+portRange.getHeight()+15);
+        this.add(proxyAddress);
+
         threadAmtText.setBounds(addressRange.getX()+addressRange.getWidth()+20,addressRange.getY(),55,30);
         this.add(threadAmtText);
 
@@ -69,6 +74,7 @@ public class SettingsPanel extends JPanel {
 
         saveAndStart.addActionListener(e->{
             Main.snifferTask=new SnifferTask(addressRange.getValue(), portRange.getValue(),
+                    proxyAddress.getValue().trim(),
                     (int)threadAmtSpinnerModel.getValue(),
                     (int)timeoutSpinnerModel.getValue()*1000,
                     (int)randomIntervalMinSpinnerModel.getValue()*1000,

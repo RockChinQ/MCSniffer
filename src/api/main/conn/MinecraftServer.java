@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -32,22 +33,22 @@ public class MinecraftServer implements IServerInfo {
     private String jsonStr;
     private boolean debug=false;
 
-    public MinecraftServer(String host,int port,boolean debugMode,int timeout)throws Exception{
+    public MinecraftServer(String host, int port, Proxy proxy, boolean debugMode, int timeout)throws Exception{
         debug=debugMode;
         long start=new Date().getTime();
-        initTimeControl(host,port,timeout);
+        initTimeControl(host,port,proxy,timeout);
         debugMsg("Spent:"+(new Date().getTime()-start)+"ms");
     }
     public MinecraftServer(String host,int port,boolean debugMode)throws Exception{
         debug=debugMode;
         long start=new Date().getTime();
-        initTimeControl(host,port,10000);
+        initTimeControl(host,port,null,10000);
         debugMsg("Spent:"+(new Date().getTime()-start)+"ms");
     }
     public MinecraftServer(String host,int port)throws Exception{
         debug=false;
         long start=new Date().getTime();
-        initTimeControl(host,port,10000);
+        initTimeControl(host,port,null,10000);
         debugMsg("Spent:"+(new Date().getTime()-start)+"ms");
     }
 
@@ -58,12 +59,12 @@ public class MinecraftServer implements IServerInfo {
         }
     }
 
-    private void initTimeControl(String host,int port,int timeout)throws Exception{
+    private void initTimeControl(String host,int port,Proxy proxy,int timeout)throws Exception{
         AtomicReference<Exception> e=new AtomicReference<>();
         final Boolean timeLock=false;
         Thread work=new Thread(()->{
             try {
-                init(host,port,timeout);
+                init(host,port,proxy,timeout);
             }catch (Exception e1){
                 e.set(e1);
             }finally {
@@ -104,9 +105,13 @@ public class MinecraftServer implements IServerInfo {
         }
     }
 
-    private void init(String host,int port,int timeout)throws Exception {
+    private void init(String host,int port,Proxy proxy,int timeout)throws Exception {
         debugMsg("MakingSocket...");
-        socket=new Socket();
+        if (proxy!=null){
+            socket=new Socket(proxy);
+        }else {
+            socket=new Socket();
+        }
         socket.connect(new InetSocketAddress(host,port),timeout);
         this.host=host;
         this.port=port;

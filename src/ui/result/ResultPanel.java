@@ -24,13 +24,6 @@ public class ResultPanel extends JPanel {
         this.add(resultListScrollPane);
         entryPanel.setLayout(null);
 
-//        this.addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentShown(ComponentEvent e) {
-//                super.componentShown(e);
-//                updateServerList();
-//            }
-//        });
     }
 
     public void updateServerList(){

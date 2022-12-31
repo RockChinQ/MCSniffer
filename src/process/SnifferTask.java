@@ -3,6 +3,8 @@ package process;
 import core.Logger;
 import core.Main;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,6 +18,8 @@ public class SnifferTask implements ISubtaskIterator {
     public ArrayList<String> addresses;
     public ArrayList<Integer> ports;
 
+    public Proxy proxy;
+
     public int currentAddressIndex=0;
     public int currentPortIndex=0;
 
@@ -24,11 +28,15 @@ public class SnifferTask implements ISubtaskIterator {
     public int status=0;
     public static final int STATUS_STOPPED=0,STATUS_RUNNING=1;
     public ArrayList<Subtask> results=new ArrayList<>();
-    public SnifferTask(String address,String port, int thread,int timeout,int intervalMin,int intervalMax) {
+    public SnifferTask(String address,String port,String proxyURL, int thread,int timeout,int intervalMin,int intervalMax) {
         this.thread=thread;
         this.timeout=timeout;
         this.intervalMin= (int) (intervalMin);
         this.intervalMax= (int) (intervalMax);
+        if (proxyURL!=null&&!proxyURL.equals("")){
+            String[] proxyURLSplit=proxyURL.split(":");
+            this.proxy=new Proxy(Proxy.Type.HTTP,new InetSocketAddress(proxyURLSplit[0],Integer.parseInt(proxyURLSplit[1])));
+        }
         this.list(address,port);
     }
 
@@ -59,7 +67,7 @@ public class SnifferTask implements ISubtaskIterator {
         workerThreads.clear();
 
         for (int i = 0; i < thread; i++) {
-            WorkerThread workerThread=new WorkerThread(this,timeout,intervalMin,intervalMax);
+            WorkerThread workerThread=new WorkerThread(this,proxy,timeout,intervalMin,intervalMax);
             workerThread.start();
             workerThreads.add(workerThread);
         }

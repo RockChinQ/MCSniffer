@@ -3,6 +3,7 @@ package process;
 import api.main.conn.MinecraftServer;
 import core.Main;
 
+import java.net.Proxy;
 import java.util.ArrayList;
 
 public class WorkerThread extends Thread{
@@ -12,12 +13,15 @@ public class WorkerThread extends Thread{
     int intervalMin;
     int intervalMax;
 
+    Proxy proxy;
+
     public int status=0;
 
     public static final int STATUS_SLEEPING = 0,STATUS_TESTING = 1,STATUS_FINISHED = 2;
-    public WorkerThread(ISubtaskIterator subtaskIterator,int timeout,int intervalMin,int intervalMax){
+    public WorkerThread(ISubtaskIterator subtaskIterator, Proxy proxy, int timeout, int intervalMin, int intervalMax){
         this.subtaskIterator=subtaskIterator;
         this.timeout=timeout;
+        this.proxy=proxy;
         this.intervalMin=intervalMin;
         this.intervalMax=intervalMax;
     }
@@ -33,7 +37,7 @@ public class WorkerThread extends Thread{
             }
             status=STATUS_TESTING;
             try {
-                MinecraftServer server = new MinecraftServer(subtask.address,subtask.port,false,this.timeout);
+                MinecraftServer server = new MinecraftServer(subtask.address,subtask.port,this.proxy,false,this.timeout);
                 if (server.isAvailable()){
                     subtask.minecraftServer=server;
                     ArrayList<String> playerList=new ArrayList<>();
