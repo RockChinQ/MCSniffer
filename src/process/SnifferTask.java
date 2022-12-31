@@ -13,6 +13,8 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class SnifferTask implements ISubtaskIterator {
 
@@ -139,7 +141,15 @@ public class SnifferTask implements ISubtaskIterator {
         progress.status=Progress.STATUS_INPROGRESS;
         progress.results=results.toArray(new Subtask[0]);
         progress.startTime=startTime;
-        this.stop();
+
+        Main.mainFrame.dashboardPanel.stop();
+        Main.mainFrame.settingsPanel.setEditable(true);
+
+        new Thread(() -> {
+            for (WorkerThread workerThread : workerThreads) {
+                workerThread.stop();
+            }
+        }).start();
         Main.mainFrame.updateTitle();
         status=STATUS_PAUSED;
         progress.status=Progress.STATUS_INPROGRESS;
@@ -207,6 +217,15 @@ public class SnifferTask implements ISubtaskIterator {
                 +" version: "+subtask.getMinecraftServer().getVersionName()+" description: "
                 +subtask.getMinecraftServer().getDefaultDescriptionText());
         results.add(subtask);
+
+        //对results根据subtask的address和port进行正序排序
+        results.sort((o1, o2) -> {
+            if (o1.address.equals(o2.address)){
+                return o1.port-o2.port;
+            }else {
+                return o1.address.compareTo(o2.address);
+            }
+        });
 
         Main.mainFrame.resultPanel.updateServerList();
 

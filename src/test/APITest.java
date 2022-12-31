@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class APITest {
     public static void main(String[] args) throws Exception {
-        MinecraftServer server = new MinecraftServer("cn-zz-bgp-6.natfrp.cloud",28338,null,true,10000);
+        MinecraftServer server = new MinecraftServer("cn-zz-bgp-1.natfrp.cloud",19839,null,true,10000);
         System.out.println(server.getRawJSONString());
         System.out.println(new Gson().toJson(server.getModInfo()));
         System.out.println(new Gson().toJson(server.getModPackData()));
