@@ -54,6 +54,9 @@ public class SnifferTask implements ISubtaskIterator {
         }
         Main.mainFrame.dashboardPanel.progressPanel.startTime=progress.startTime;
         Main.mainFrame.dashboardPanel.waterfallPanel.startTime=progress.startTime;
+        results.addAll(Arrays.asList(progress.results));
+        Main.mainFrame.resultPanel.updateServerList();
+        Main.mainFrame.tabbedPane.setTitleAt(2,"Results"+" ("+results.size()+")");
     }
 
     public void init(String address,String port,String proxyURL, int thread,int timeout,int intervalMin,int intervalMax){
