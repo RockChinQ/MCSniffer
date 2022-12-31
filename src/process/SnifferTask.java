@@ -57,6 +57,9 @@ public class SnifferTask implements ISubtaskIterator {
         results.addAll(Arrays.asList(progress.results));
         Main.mainFrame.resultPanel.updateServerList();
         Main.mainFrame.tabbedPane.setTitleAt(2,"Results"+" ("+results.size()+")");
+        if (progress.status==Progress.STATUS_FINISHED){
+            Main.mainFrame.settingsPanel.pauseAndResume.setEnabled(false);
+        }
     }
 
     public void init(String address,String port,String proxyURL, int thread,int timeout,int intervalMin,int intervalMax){
@@ -110,6 +113,7 @@ public class SnifferTask implements ISubtaskIterator {
         Main.mainFrame.tabbedPane.setSelectedIndex(1);
         Main.mainFrame.dashboardPanel.start(200);
         status=STATUS_RUNNING;
+        Main.mainFrame.updateTitle();
     }
 
     public void pause(){
@@ -134,6 +138,7 @@ public class SnifferTask implements ISubtaskIterator {
         progress.startTime=startTime;
         this.stop();
         status=STATUS_PAUSED;
+        Main.mainFrame.updateTitle();
     }
 
     public void resume(){
@@ -156,6 +161,7 @@ public class SnifferTask implements ISubtaskIterator {
         Main.mainFrame.dashboardPanel.progressPanel.startTime=progress.startTime;
         Main.mainFrame.dashboardPanel.waterfallPanel.startTime=progress.startTime;
         status=STATUS_RUNNING;
+        Main.mainFrame.updateTitle();
     }
 
     public void stop(){
@@ -168,6 +174,9 @@ public class SnifferTask implements ISubtaskIterator {
                 workerThread.stop();
             }
         }).start();
+        Main.mainFrame.updateTitle();
+        progress.status=Progress.STATUS_FINISHED;
+        Main.mainFrame.settingsPanel.pauseAndResume.setEnabled(false);
     }
     @Override
     public synchronized boolean hasNext() {

@@ -1,5 +1,7 @@
 package ui;
 
+import core.Main;
+import process.SnifferTask;
 import ui.dashborad.DashboardPanel;
 import ui.result.ResultPanel;
 import ui.settings.SettingsPanel;
@@ -61,5 +63,9 @@ public class MainFrame extends JFrame {
 
         DialogManager.register(this);
         DialogManager.setCenter(this);
+    }
+
+    public void updateTitle(){
+        this.setTitle("MCSniffer "+ (Main.snifferTask.status== SnifferTask.STATUS_RUNNING?"- Running":""));
     }
 }

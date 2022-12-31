@@ -40,7 +40,7 @@ public class SettingsPanel extends JPanel {
 
     JButton saveAndStart=new JButton("Save & Start");
 
-    JButton pauseAndResume=new JButton("Pause");
+    public JButton pauseAndResume=new JButton("Pause");
     JButton export=new JButton("Export Progress");
     JButton load=new JButton("Load Progress");
     public SettingsPanel(){
@@ -116,6 +116,10 @@ public class SettingsPanel extends JPanel {
                 Main.snifferTask.pause();
                 pauseAndResume.setText("Resume");
             }else {
+                if (Main.snifferTask!=null&&Main.snifferTask.status==SnifferTask.STATUS_STOPPED){
+                    JOptionPane.showMessageDialog(null,"Task already finished");
+                    return;
+                }
                 exportSettings();
                 Main.snifferTask.progress.settings=Main.settings.clone();
                 Main.snifferTask.init(Main.settings.addresses,Main.settings.ports,Main.settings.proxyURL,Main.settings.thread,Main.settings.timeout,Main.settings.intervalMin,Main.settings.intervalMax);
@@ -158,6 +162,8 @@ public class SettingsPanel extends JPanel {
                 fileName+=".json";
             }
             try {
+                pauseAndResume.setEnabled(true);
+                pauseAndResume.setText("Resume");
                 String jsonStr= FileIO.read(fileName);
                 Progress progress=new Gson().fromJson(jsonStr,Progress.class);
                 Main.snifferTask=new SnifferTask(progress);
@@ -170,9 +176,6 @@ public class SettingsPanel extends JPanel {
                 timeoutAmtSpinner.setValue(progress.settings.timeout);
                 randomIntervalMinSpinner.setValue(progress.settings.intervalMin);
                 randomIntervalMaxSpinner.setValue(progress.settings.intervalMax);
-
-                pauseAndResume.setEnabled(true);
-                pauseAndResume.setText("Resume");
 
                 exportSettings();
             } catch (Exception ioException) {
