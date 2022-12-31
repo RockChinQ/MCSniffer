@@ -14,9 +14,9 @@ public class Settings {
     public String ports;
     public String proxyURL;
     public int thread=16;
-    public int timeout=3;
-    public int intervalMin=1;
-    public int intervalMax=5;
+    public int timeout=3000;
+    public int intervalMin=1000;
+    public int intervalMax=5000;
 
     public void dump() throws Exception {
         FileIO.write("settings.json", toPrettyFormat(new Gson().toJson(this)));

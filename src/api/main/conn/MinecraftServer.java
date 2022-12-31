@@ -23,14 +23,14 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Rock Chin
  */
 public class MinecraftServer implements IServerInfo {
-    private Socket socket;
-    private DataOutputStream dataOutputStream;
-    private DataInputStream dataInputStream;
+    private transient Socket socket;
+    private transient DataOutputStream dataOutputStream;
+    private transient DataInputStream dataInputStream;
     private String host;
     private int port=25565;
     private Response response=null;
     private boolean available=false;
-    private String jsonStr;
+    private transient String jsonStr;
     private boolean debug=false;
 
     public MinecraftServer(String host, int port, Proxy proxy, boolean debugMode, int timeout)throws Exception{

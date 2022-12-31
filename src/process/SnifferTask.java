@@ -1,5 +1,10 @@
 package process;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import core.FileIO;
 import core.Logger;
 import core.Main;
 import data.Progress;
@@ -33,10 +38,29 @@ public class SnifferTask implements ISubtaskIterator {
 
     public Progress progress;
     public SnifferTask(String address,String port,String proxyURL, int thread,int timeout,int intervalMin,int intervalMax) {
+        init(address,port,proxyURL,thread,timeout,intervalMin,intervalMax);
+    }
+
+    public SnifferTask(Progress progress) {
+        this.progress=progress;
+        init(progress.settings.addresses,progress.settings.ports,progress.settings.proxyURL,progress.settings.thread,progress.settings.timeout,progress.settings.intervalMin,progress.settings.intervalMax);
+        currentAddressIndex=progress.addressIndex;
+        currentPortIndex=progress.portIndex;
+        startTime=progress.startTime;
+        for (int i = 0; i < thread; i++) {
+            Logger.log("Sniffer","Create thread: "+i);
+            WorkerThread workerThread=new WorkerThread(this,proxy,timeout,intervalMin,intervalMax);
+            workerThreads.add(workerThread);
+        }
+        Main.mainFrame.dashboardPanel.progressPanel.startTime=progress.startTime;
+        Main.mainFrame.dashboardPanel.waterfallPanel.startTime=progress.startTime;
+    }
+
+    public void init(String address,String port,String proxyURL, int thread,int timeout,int intervalMin,int intervalMax){
         this.thread=thread;
         this.timeout=timeout;
-        this.intervalMin= (int) (intervalMin);
-        this.intervalMax= (int) (intervalMax);
+        this.intervalMin= intervalMin;
+        this.intervalMax= intervalMax;
         if (proxyURL!=null&&!proxyURL.equals("")){
             String[] proxyURLSplit=proxyURL.split(":");
             this.proxy=new Proxy(Proxy.Type.HTTP,new InetSocketAddress(proxyURLSplit[0],Integer.parseInt(proxyURLSplit[1])));
@@ -74,6 +98,7 @@ public class SnifferTask implements ISubtaskIterator {
         workerThreads.clear();
 
         for (int i = 0; i < thread; i++) {
+            Logger.log("Sniffer","Create thread: "+i);
             WorkerThread workerThread=new WorkerThread(this,proxy,timeout,intervalMin,intervalMax);
             workerThread.start();
             workerThreads.add(workerThread);
@@ -85,6 +110,18 @@ public class SnifferTask implements ISubtaskIterator {
     }
 
     public void pause(){
+        //回溯指针
+        for (int i=0;i<workerThreads.size();i++){
+            WorkerThread workerThread=workerThreads.get(i);
+            if (workerThread.status==WorkerThread.STATUS_TESTING){
+                currentPortIndex--;
+                if (currentPortIndex<0){
+                    currentPortIndex=ports.size()-1;
+                    currentAddressIndex--;
+                }
+            }
+        }
+
         progress=new Progress();
         progress.settings=Main.settings;
         progress.addressIndex=currentAddressIndex;
@@ -105,6 +142,7 @@ public class SnifferTask implements ISubtaskIterator {
         currentAddressIndex=progress.addressIndex;
         currentPortIndex=progress.portIndex;
         for (int i = 0; i < thread; i++) {
+            Logger.log("Sniffer","Create thread: "+i);
             WorkerThread workerThread=new WorkerThread(this,proxy,timeout,intervalMin,intervalMax);
             workerThread.start();
             workerThreads.add(workerThread);
@@ -164,5 +202,16 @@ public class SnifferTask implements ISubtaskIterator {
     public synchronized void exception(Subtask subtask, Exception e) {
 //        System.out.println("Exception: "+subtask.address+":"+subtask.port);
         Logger.log("Sniffer","Exception: "+subtask.address+":"+subtask.port+" "+e.getMessage());
+    }
+
+    public void exportProgress(String fileName) throws Exception {
+        String json=new Gson().toJson(progress);
+        FileIO.write(fileName,toPrettyFormat(json));
+    }
+    public static String toPrettyFormat(String json) {
+        JsonParser jsonParser = new JsonParser();
+        JsonObject jsonObject = jsonParser.parse(json).getAsJsonObject();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(jsonObject);
     }
 }
