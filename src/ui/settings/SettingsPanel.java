@@ -14,7 +14,7 @@ public class SettingsPanel extends JPanel {
     InputAreaField addressRange=new InputAreaField("Addresses",350,120,70);
     InputAreaField portRange=new InputAreaField("Ports",350,80,70);
 
-    InputField proxyAddress=new InputField("Proxy URL",350,30,70);
+    InputField proxyAddress=new InputField("Proxy URL",350,35,70);
     SpinnerModel threadAmtSpinnerModel = new SpinnerNumberModel(8, // initial value
             0, // min
             65535, // max
@@ -83,7 +83,7 @@ public class SettingsPanel extends JPanel {
         randomIntervalMaxSpinner.setValue(Main.settings.intervalMax);
         this.add(randomIntervalMaxSpinner);
 
-        saveAndStart.setBounds(timeoutText.getX(),randomIntervalMinSpinner.getY()+randomIntervalMinSpinner.getHeight()+20,90,30);
+        saveAndStart.setBounds(timeoutText.getX(),randomIntervalMinSpinner.getY()+randomIntervalMinSpinner.getHeight()+25,90,30);
         saveAndStart.setBorder(BorderFactory.createEtchedBorder());
 
         saveAndStart.addActionListener(e->{
