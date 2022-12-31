@@ -73,7 +73,7 @@ public class ServerEntry extends JPanel {
         });
         this.add(copyAddressPortButton);
 
-        modLabel.setBounds(150,50,120,15);
+        modLabel.setBounds(150,50,80,15);
         modLabel.setText("mod detected");
         modLabel.setForeground(Color.RED);
         if (subtask.getMinecraftServer().getModInfo()!=null||subtask.getMinecraftServer().getModPackData()!=null||subtask.getMinecraftServer().getForgeData()!=null){
@@ -96,7 +96,7 @@ public class ServerEntry extends JPanel {
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 copyAddressPortButton.setBounds(getWidth()-50,5,40,25);
-                modLabel.setBounds(getWidth()-110,50,100,15);
+                modLabel.setBounds(getWidth()-90,50,80,15);
             }
         });
     }

@@ -1,6 +1,7 @@
 package ui.dashborad;
 
 import core.Main;
+import core.TimeUtil;
 
 import javax.swing.*;
 import java.util.Timer;
@@ -20,6 +21,8 @@ public class ProgressPanel extends JPanel {
     JLabel estimatedTime=new JLabel("Estimate");
 
     JLabel foundCount=new JLabel("Found");
+
+    JLabel startTimeLabel=new JLabel("Start");
 
     long scanInterval=250;
 
@@ -54,6 +57,9 @@ public class ProgressPanel extends JPanel {
 
         foundCount.setBounds(spentTime.getX(),spentTime.getY()+spentTime.getHeight()+10,250,20);
         this.add(foundCount);
+
+        startTimeLabel.setBounds(foundCount.getX()+foundCount.getWidth()+10,foundCount.getY(),250,20);
+        this.add(startTimeLabel);
     }
 
     public void start(long scanInterval){
@@ -97,6 +103,8 @@ public class ProgressPanel extends JPanel {
             estimatedTime.setText("Estimate:"+estHHMMSS);
 
             foundCount.setText("Found:"+Main.snifferTask.results.size());
+
+            startTimeLabel.setText("Start time:"+ TimeUtil.millsToMMDDHHmmSS(startTime));
         }catch (Exception e){
             e.printStackTrace();
         }

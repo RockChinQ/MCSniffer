@@ -59,7 +59,10 @@ public class SnifferTask implements ISubtaskIterator {
         Main.mainFrame.tabbedPane.setTitleAt(2,"Results"+" ("+results.size()+")");
         if (progress.status==Progress.STATUS_FINISHED){
             Main.mainFrame.settingsPanel.pauseAndResume.setEnabled(false);
+        }else{
+            Main.mainFrame.settingsPanel.pauseAndResume.setEnabled(true);
         }
+        this.status=progress.status==Progress.STATUS_INPROGRESS?STATUS_PAUSED:STATUS_STOPPED;
     }
 
     public void init(String address,String port,String proxyURL, int thread,int timeout,int intervalMin,int intervalMax){
@@ -137,8 +140,9 @@ public class SnifferTask implements ISubtaskIterator {
         progress.results=results.toArray(new Subtask[0]);
         progress.startTime=startTime;
         this.stop();
-        status=STATUS_PAUSED;
         Main.mainFrame.updateTitle();
+        status=STATUS_PAUSED;
+        progress.status=Progress.STATUS_INPROGRESS;
     }
 
     public void resume(){
@@ -176,7 +180,6 @@ public class SnifferTask implements ISubtaskIterator {
         }).start();
         Main.mainFrame.updateTitle();
         progress.status=Progress.STATUS_FINISHED;
-        Main.mainFrame.settingsPanel.pauseAndResume.setEnabled(false);
     }
     @Override
     public synchronized boolean hasNext() {

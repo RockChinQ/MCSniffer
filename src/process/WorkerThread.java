@@ -62,6 +62,7 @@ public class WorkerThread extends Thread{
                 return;
             }
         }
+        Main.mainFrame.settingsPanel.pauseAndResume.setEnabled(false);
         Main.snifferTask.stop();
     }
 }
