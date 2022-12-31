@@ -27,7 +27,7 @@ public class ResultPanel extends JPanel {
     }
 
     public void updateServerList(){
-        serverEntries.forEach(resultListScrollPane::remove);
+        serverEntries.forEach(entryPanel::remove);
         serverEntries.clear();
 
         for(int i=0;Main.snifferTask!=null&&Main.snifferTask.results!=null&&i<Main.snifferTask.results.size();i++){
