@@ -40,33 +40,40 @@ public class SettingsPanel extends JPanel {
         this.setLayout(null);
 
         addressRange.setLocation(20,20);
+        addressRange.setValue(Main.settings.addresses);
         this.add(addressRange);
 
         portRange.setLocation(addressRange.getX(),addressRange.getY()+addressRange.getHeight()+15);
+        portRange.setValue(Main.settings.ports);
         this.add(portRange);
 
         proxyAddress.setLocation(portRange.getX(),portRange.getY()+portRange.getHeight()+15);
+        proxyAddress.setValue(Main.settings.proxyURL);
         this.add(proxyAddress);
 
         threadAmtText.setBounds(addressRange.getX()+addressRange.getWidth()+20,addressRange.getY(),55,30);
         this.add(threadAmtText);
 
         threadAmtSpinner.setBounds(threadAmtText.getX()+threadAmtText.getWidth(),threadAmtText.getY(),70,30);
+        threadAmtSpinner.setValue(Main.settings.thread);
         this.add(threadAmtSpinner);
 
         timeoutText.setBounds(threadAmtText.getX(),threadAmtText.getY()+threadAmtText.getHeight()+10,55,30);
         this.add(timeoutText);
 
         timeoutAmtSpinner.setBounds(timeoutText.getX()+timeoutText.getWidth(), timeoutText.getY(), 70,30);
+        timeoutAmtSpinner.setValue(Main.settings.timeout);
         this.add(timeoutAmtSpinner);
 
         randomIntervalText.setBounds(timeoutText.getX(),timeoutText.getY()+timeoutText.getHeight()+10,100,30);
         this.add(randomIntervalText);
 
         randomIntervalMinSpinner.setBounds(randomIntervalText.getX(),randomIntervalText.getY()+randomIntervalText.getHeight()+5,70,30);
+        randomIntervalMinSpinner.setValue(Main.settings.intervalMin);
         this.add(randomIntervalMinSpinner);
 
         randomIntervalMaxSpinner.setBounds(randomIntervalMinSpinner.getX()+randomIntervalMinSpinner.getWidth()+10,randomIntervalMinSpinner.getY(),70,30);
+        randomIntervalMaxSpinner.setValue(Main.settings.intervalMax);
         this.add(randomIntervalMaxSpinner);
 
         saveAndStart.setBounds(timeoutText.getX(),portRange.getY()+portRange.getHeight()-30,120,30);
@@ -83,6 +90,18 @@ public class SettingsPanel extends JPanel {
             Main.mainFrame.tabbedPane.setSelectedIndex(1);
             Main.snifferTask.start();
             Main.mainFrame.dashboardPanel.start(200);
+
+            Main.settings.addresses=addressRange.getValue();
+            Main.settings.ports=portRange.getValue();
+            Main.settings.proxyURL=proxyAddress.getValue().trim();
+            Main.settings.thread=(int)threadAmtSpinnerModel.getValue();
+            Main.settings.timeout=(int)timeoutSpinnerModel.getValue();
+            Main.settings.intervalMin=(int)randomIntervalMinSpinnerModel.getValue();
+            Main.settings.intervalMax=(int)randomIntervalMaxSpinnerModel.getValue();
+            try {
+                Main.settings.dump();
+            } catch (Exception ignored) {
+            }
         });
         this.add(saveAndStart);
     }
