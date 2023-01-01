@@ -57,7 +57,6 @@ public class SnifferTask implements ISubtaskIterator {
         Main.mainFrame.dashboardPanel.progressPanel.startTime=progress.startTime;
         Main.mainFrame.dashboardPanel.waterfallPanel.startTime=progress.startTime;
         results.addAll(Arrays.asList(progress.results));
-        Main.mainFrame.resultPanel.updateServerList();
         Main.mainFrame.tabbedPane.setTitleAt(2,"Results"+" ("+results.size()+")");
         if (progress.status==Progress.STATUS_FINISHED){
             Main.mainFrame.settingsPanel.pauseAndResume.setEnabled(false);

@@ -14,7 +14,7 @@ public class SettingsPanel extends JPanel {
     InputAreaField addressRange=new InputAreaField("Addresses",350,120,70);
     InputAreaField portRange=new InputAreaField("Ports",350,80,70);
 
-    InputField proxyAddress=new InputField("Proxy URL",350,35,70);
+    public InputField proxyAddress=new InputField("Proxy URL",350,35,70);
     SpinnerModel threadAmtSpinnerModel = new SpinnerNumberModel(8, // initial value
             0, // min
             65535, // max
@@ -167,17 +167,20 @@ public class SettingsPanel extends JPanel {
                 String jsonStr= FileIO.read(fileName);
                 Progress progress=new Gson().fromJson(jsonStr,Progress.class);
                 Main.snifferTask=new SnifferTask(progress);
+                Main.mainFrame.resultPanel.updateServerList();
                 Main.mainFrame.dashboardPanel.progressPanel.update();
 
                 addressRange.setValue(progress.settings.addresses);
                 portRange.setValue(progress.settings.ports);
-                proxyAddress.setValue(progress.settings.proxyURL);
+//                proxyAddress.setValue(progress.settings.proxyURL);
                 threadAmtSpinner.setValue(progress.settings.thread);
                 timeoutAmtSpinner.setValue(progress.settings.timeout);
                 randomIntervalMinSpinner.setValue(progress.settings.intervalMin);
                 randomIntervalMaxSpinner.setValue(progress.settings.intervalMax);
 
                 exportSettings();
+
+                Main.mainFrame.resultPanel.refreshAll();
             } catch (Exception ioException) {
                 ioException.printStackTrace();
                 JOptionPane.showMessageDialog(null,"Error loading progress: "+ioException.getMessage());

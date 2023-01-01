@@ -51,7 +51,7 @@ public class MappingRule extends Thread{
         }
     }
 
-    public void testConfig() throws IOException {
+    public void testConfig() throws Exception {
         //测试远程是否可以连接
         Socket socket;
         if (proxy!=null){

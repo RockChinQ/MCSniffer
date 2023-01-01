@@ -4,6 +4,7 @@ import api.main.api.IServerInfo;
 import api.main.conn.MinecraftServer;
 
 import java.awt.image.BufferedImage;
+import java.net.Proxy;
 
 public class Subtask {
 
@@ -48,5 +49,14 @@ public class Subtask {
 
     public void setPlayerList(String[] playerList) {
         this.playerList = playerList;
+    }
+
+    public void refresh(Proxy proxy, int timeout) throws Exception {
+        MinecraftServer server = new MinecraftServer(this.address,this.port,proxy,false,timeout);
+        if(server.isAvailable()){
+            this.minecraftServer=server;
+        }else {
+            throw new Exception("Server is not available");
+        }
     }
 }

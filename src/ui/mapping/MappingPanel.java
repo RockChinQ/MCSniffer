@@ -52,15 +52,22 @@ public class MappingPanel extends JPanel {
                 if (Main.mappingRule!=null){
                     Main.mappingRule.close();
                 }
+                boolean success=false;
                 try {
                     Main.mappingRule=new MappingRule((int)localPortSpinner.getValue(),remoteHostField.getValue(),
                             (int)remotePortSpinner.getValue(),proxyURLField.getValue(),null);
                     Main.mappingRule.start();
                     startAndStopButton.setText("Stop");
                     this.setEditable(false);
+                    success=true;
                 } catch (Exception ex) {
+                    System.out.println("Failed to start mapping rule");
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null,"Failed to start mapping rule: "+ Logger.getErrorInfo(ex));
+                }finally {
+                    if (!success){
+                        JOptionPane.showMessageDialog(null,"Failed to start mapping rule.Target remote server may be offline.");
+                    }
                 }
 
             } else {

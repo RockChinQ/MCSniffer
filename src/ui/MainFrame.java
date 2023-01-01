@@ -47,9 +47,9 @@ public class MainFrame extends JFrame {
         tabbedPane = new JTabbedPane();
         this.add(tabbedPane);
         tabbedPane.addChangeListener(e -> {
-            if (tabbedPane.getSelectedIndex()==2){
-                resultPanel.updateServerList();
-            }
+//            if (tabbedPane.getSelectedIndex()==2){
+//                resultPanel.updateServerList();
+//            }
         });
         tabbedPane.add("Settings", settingsPanel);
         tabbedPane.add("Dashboard", dashboardPanel);
