@@ -60,7 +60,7 @@ public class MappingRule extends Thread{
             socket=new Socket();
         }
 
-        socket.connect(new InetSocketAddress(remoteHost,remotePort),5000);
+        socket.connect(new InetSocketAddress(remoteHost,remotePort),3000);
 
         socket.close();
         //测试本地是否可以监听

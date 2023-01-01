@@ -72,7 +72,7 @@ public class ResultPanel extends JPanel {
             });
             for (ServerEntry serverEntry : serverEntries) {
                 try{
-                    Thread.sleep((long) (Math.random()*500+200));
+                    Thread.sleep((long) (Math.random()*200));
                 }catch (Exception ignored){
                 }
                 serverEntry.refresh(proxy);

@@ -64,6 +64,6 @@ public class MainFrame extends JFrame {
     }
 
     public void updateTitle(){
-        this.setTitle("MCSniffer "+ (Main.snifferTask.status== SnifferTask.STATUS_RUNNING?"- Running":""));
+        this.setTitle("MCSniffer "+ (Main.snifferTask.status==SnifferTask.STATUS_RUNNING?"- Running":""));
     }
 }

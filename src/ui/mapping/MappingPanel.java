@@ -35,6 +35,17 @@ public class MappingPanel extends JPanel {
 
         remoteHostField.setLocation(10,50);
         remoteHostField.setValue(Main.mapping.remoteHost);
+        //粘贴到remoteHostField.input的时候检查是否包含端口号，若包含，则将端口号分离出来，设置到remotePortSpinner
+        remoteHostField.input.addCaretListener(e -> {
+            new Thread(()->{
+                String text=remoteHostField.input.getText();
+                if(text.contains(":")){
+                    String[] split=text.split(":");
+                    remoteHostField.input.setText(split[0]);
+                    remotePortSpinner.setValue(Integer.parseInt(split[1]));
+                }
+            }).start();
+        });
         this.add(remoteHostField);
 
         remotePortLabel.setBounds(remoteHostField.getX()+remoteHostField.getWidth()+10,remoteHostField.getY(),80,30);
