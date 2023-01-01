@@ -30,18 +30,22 @@ public class MappingPanel extends JPanel {
         this.add(localPortLabel);
 
         localPortSpinner.setBounds(localPortLabel.getX()+localPortLabel.getWidth(),10,100,30);
+        localPortSpinner.setValue(Main.mapping.localPort);
         this.add(localPortSpinner);
 
         remoteHostField.setLocation(10,50);
+        remoteHostField.setValue(Main.mapping.remoteHost);
         this.add(remoteHostField);
 
         remotePortLabel.setBounds(remoteHostField.getX()+remoteHostField.getWidth()+10,remoteHostField.getY(),80,30);
         this.add(remotePortLabel);
 
         remotePortSpinner.setBounds(remotePortLabel.getX()+remotePortLabel.getWidth(),remotePortLabel.getY(),70,30);
+        remotePortSpinner.setValue(Main.mapping.remotePort);
         this.add(remotePortSpinner);
 
         proxyURLField.setLocation(10,remotePortLabel.getY()+remotePortLabel.getHeight()+10);
+        proxyURLField.setValue(Main.mapping.proxyURL);
         this.add(proxyURLField);
 
         startAndStopButton.setBounds(proxyURLField.getX()+proxyURLField.getWidth()+40,proxyURLField.getY(),80,30);
@@ -60,6 +64,12 @@ public class MappingPanel extends JPanel {
                     startAndStopButton.setText("Stop");
                     this.setEditable(false);
                     success=true;
+
+                    Main.mapping.localPort=(int)localPortSpinner.getValue();
+                    Main.mapping.remoteHost=remoteHostField.getValue();
+                    Main.mapping.remotePort=(int)remotePortSpinner.getValue();
+                    Main.mapping.proxyURL=proxyURLField.getValue();
+                    Main.mapping.dump();
                 } catch (Exception ex) {
                     System.out.println("Failed to start mapping rule");
                     ex.printStackTrace();
