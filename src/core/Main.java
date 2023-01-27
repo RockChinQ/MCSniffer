@@ -10,11 +10,14 @@ import mapping.MappingRule;
 import process.SnifferTask;
 import ui.MainFrame;
 
+import java.io.IOException;
+
 public class Main {
     public static MainFrame mainFrame;
     public static SnifferTask snifferTask;
     public static Settings settings;
 
+    public static final String VERSION = "0.2.0";
     public static MappingRule mappingRule;
     public static Mapping mapping;
     public static void main(String[] args) {
@@ -29,6 +32,14 @@ public class Main {
         }catch (Exception ignored){}
 
         mainFrame=new MainFrame();
+
+        new Thread(()->{
+            try {
+                HttpRequest.doGet("http://rockchin.top:18989/usage?service_name=mcsniffer&version="+VERSION+"&count=1");
+            } catch (IOException ignored) {
+                ;
+            }
+        }).start();
     }
     public static String toPrettyFormat(String json) {
         JsonParser jsonParser = new JsonParser();
